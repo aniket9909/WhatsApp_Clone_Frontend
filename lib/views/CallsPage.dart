@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:whatsapp_clone/utils/constant_color.dart';
-import 'package:whatsapp_clone/views/ChatView.dart';
 
 import '../widget/CommonWidget.dart';
 
@@ -24,8 +22,6 @@ class _CallsPageState extends State<CallsPage> {
               ? InkWell(
                   onTap: () {
                     print("call");
-                    Get.to(() => const ChatView(),
-                        transition: Transition.rightToLeft);
                   },
                   child: Column(
                     children: [
@@ -82,8 +78,6 @@ class _CallsPageState extends State<CallsPage> {
               : InkWell(
                   onTap: () {
                     print("call");
-                    Get.to(() => const ChatView(),
-                        transition: Transition.rightToLeft);
                   },
                   child: Container(
                     alignment: Alignment.center,

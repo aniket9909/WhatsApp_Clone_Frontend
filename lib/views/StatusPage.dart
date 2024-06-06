@@ -1,9 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:badges/src/badge.dart' as badge;
 import 'package:whatsapp_clone/utils/constant_color.dart';
-import 'package:whatsapp_clone/views/ChatView.dart';
 
 import '../widget/CommonWidget.dart';
 
@@ -26,8 +24,6 @@ class _StatusPageState extends State<StatusPage> {
               ? InkWell(
                   onTap: () {
                     print("call");
-                    Get.to(() => const ChatView(),
-                        transition: Transition.rightToLeft);
                   },
                   child: Column(
                     children: [
@@ -88,8 +84,6 @@ class _StatusPageState extends State<StatusPage> {
               : InkWell(
                   onTap: () {
                     print("call");
-                    Get.to(() => const ChatView(),
-                        transition: Transition.rightToLeft);
                   },
                   child: Container(
                     alignment: Alignment.center,

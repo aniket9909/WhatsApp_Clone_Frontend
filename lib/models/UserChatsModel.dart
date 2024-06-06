@@ -1,7 +1,7 @@
 class UserChatsModel {
   int? status;
   bool? error;
-  List<Data>? data;
+  List<ChatDataList>? data;
 
   UserChatsModel({this.status, this.error, this.data});
 
@@ -9,9 +9,9 @@ class UserChatsModel {
     status = json['status'];
     error = json['error'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <ChatDataList>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(ChatDataList.fromJson(v));
       });
     }
   }
@@ -27,7 +27,7 @@ class UserChatsModel {
   }
 }
 
-class Data {
+class ChatDataList {
   int? id;
   String? name;
   String? email;
@@ -35,7 +35,7 @@ class Data {
   String? createdAt;
   String? updatedAt;
 
-  Data(
+  ChatDataList(
       {this.id,
       this.name,
       this.email,
@@ -43,7 +43,7 @@ class Data {
       this.createdAt,
       this.updatedAt});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  ChatDataList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     email = json['email'];

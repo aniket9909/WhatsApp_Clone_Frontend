@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whatsapp_clone/api/api_service.dart';
+import 'package:whatsapp_clone/models/UserChatsModel.dart';
 import 'package:whatsapp_clone/models/UserModel.dart';
 
 class User_controller extends GetxController {
-  var data = Data();
-
   Future<dynamic> getUser() async {
+    var data = Data();
     SharedPreferences pref = await SharedPreferences.getInstance();
     try {
       print('in controller');
@@ -25,20 +25,23 @@ class User_controller extends GetxController {
     }
   }
 
+  var userChatList = List<ChatDataList>.empty().obs;
+  var isLoading = false.obs;
   Future<dynamic> getUserChats() async {
-    var userList = List<Data>.empty();
     SharedPreferences pref = await SharedPreferences.getInstance();
     try {
+      isLoading = true.obs;
       print('in getuserData controller');
       var response1 = await ApiService.getUserChats(pref.getInt('user_id'));
       if (response1 != null) {
-        print(response1.data);
-        data = response1.data!;
-        print(data);
-        // userList = data as List<Data>;
+        var data = response1.data!;
+        print("get userchats sucess from the controller function");
+        userChatList.assignAll(data);
+        isLoading = false.obs;
+        return userChatList;
       }
     } catch (e) {
-      print("from controller error");
+      print("from get chat User controller error");
       print(e);
     }
   }

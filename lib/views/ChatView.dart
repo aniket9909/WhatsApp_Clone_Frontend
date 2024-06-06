@@ -1,61 +1,87 @@
-import 'package:chat_bubbles/chat_bubbles.dart';
+import 'package:chat_bubbles/bubbles/bubble_special_one.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whatsapp_clone/utils/constant_color.dart';
 
-import '../models/ChatMsg.dart';
+import '../controller/ChatsController.dart';
 import '../widget/CommonWidget.dart';
 
 class ChatView extends StatefulWidget {
-  const ChatView({super.key});
+  final user_id;
+  final userData;
+  const ChatView({super.key, required this.user_id, required this.userData});
 
   @override
-  State<ChatView> createState() => _ChatViewState();
+  State<ChatView> createState() =>
+      _ChatViewState(reciever_id: user_id, userData: userData);
 }
 
 class _ChatViewState extends State<ChatView> {
-  List<ChatMessage> messages = [
-    ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
-    ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "Hey Kriss, I am doing fine dude. wbu?",
-        messageType: "sender"),
-    ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "Is there any thing wrong?", messageType: "sender"),
-    ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
-    ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "Hey Kriss, I am doing fine dude. wbu?",
-        messageType: "sender"),
-    ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "Is there any thing wrong?", messageType: "sender"),
-    ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
-    ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "Hey Kriss, I am doing fine dude. wbu?",
-        messageType: "sender"),
-    ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "Is there any thing wrong?", messageType: "sender"),
-    ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
-    ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "Hey Kriss, I am doing fine dude. wbu?",
-        messageType: "sender"),
-    ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "Is there any thing wrong?", messageType: "sender"),
-    ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
-    ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
-    ChatMessage(
-        messageContent:
-            "Hey Kriss, I am doing fiwcfsdsdjshdfgjshdgfjsh hsgdfhgshf sjdhfsjhfdg sjhfdgshfg ne dude. wbu?",
-        messageType: "sender"),
-    ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "Is there any thing wrong?", messageType: "sender"),
-  ];
+  final reciever_id;
+  final userData;
+  _ChatViewState({required this.reciever_id, required this.userData});
+  final ChatsController _chatsController = ChatsController();
+  var chatTextController = TextEditingController();
+  var sender_id;
+
+  @override
+  void initState() {
+    super.initState();
+    getChatsHistory();
+  }
+
+  void getChatsHistory() async {
+    print("click to user is $reciever_id");
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    sender_id = pref.get("user_id");
+    _chatsController.getChats(reciever_id);
+    print(_chatsController.chatList);
+  }
+
+  // List<ChatMessage> messages = [
+  //   ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
+  //   ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
+  //   ChatMessage(
+  //       messageContent: "Hey Kriss, I am doing fine dude. wbu?",
+  //       messageType: "sender"),
+  //   ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
+  //   ChatMessage(
+  //       messageContent: "Is there any thing wrong?", messageType: "sender"),
+  //   ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
+  //   ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
+  //   ChatMessage(
+  //       messageContent: "Hey Kriss, I am doing fine dude. wbu?",
+  //       messageType: "sender"),
+  //   ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
+  //   ChatMessage(
+  //       messageContent: "Is there any thing wrong?", messageType: "sender"),
+  //   ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
+  //   ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
+  //   ChatMessage(
+  //       messageContent: "Hey Kriss, I am doing fine dude. wbu?",
+  //       messageType: "sender"),
+  //   ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
+  //   ChatMessage(
+  //       messageContent: "Is there any thing wrong?", messageType: "sender"),
+  //   ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
+  //   ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
+  //   ChatMessage(
+  //       messageContent: "Hey Kriss, I am doing fine dude. wbu?",
+  //       messageType: "sender"),
+  //   ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
+  //   ChatMessage(
+  //       messageContent: "Is there any thing wrong?", messageType: "sender"),
+  //   ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
+  //   ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
+  //   ChatMessage(
+  //       messageContent:
+  //           "Hey Kriss, I am doing fiwcfsdsdjshdfgjshdgfjsh hsgdfhgshf sjdhfsjhfdg sjhfdgshfg ne dude. wbu?",
+  //       messageType: "sender"),
+  //   ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
+  //   ChatMessage(
+  //       messageContent: "Is there any thing wrong?", messageType: "sender"),
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +104,7 @@ class _ChatViewState extends State<ChatView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "aniket",
+                  userData.name!,
                   style: CommonWidget.getTextStyle(
                       17, FontWeight.w700, Colors.white, context),
                 ),
@@ -120,6 +146,7 @@ class _ChatViewState extends State<ChatView> {
             SizedBox(
               width: MediaQuery.of(context).size.width - 70,
               child: TextField(
+                controller: chatTextController,
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.emoji_emotions),
                   prefixIconColor: const Color(0xff899AA2),
@@ -170,10 +197,21 @@ class _ChatViewState extends State<ChatView> {
             ),
             Container(
               margin: const EdgeInsets.only(left: 5),
-              child: CircleAvatar(
-                maxRadius: 25,
-                backgroundColor: primaryColor,
-                child: const Icon(Icons.mic),
+              child: InkWell(
+                onTap: () async {
+                  if (chatTextController.text.isNotEmpty) {
+                    await _chatsController.sendMessage(
+                        reciever_id, chatTextController.text);
+                    setState(() {
+                      chatTextController.clear();
+                    });
+                  }
+                },
+                child: CircleAvatar(
+                  maxRadius: 25,
+                  backgroundColor: primaryColor,
+                  child: const Icon(Icons.send),
+                ),
               ),
             )
           ],
@@ -181,34 +219,41 @@ class _ChatViewState extends State<ChatView> {
       ),
       body: Container(
         // padding: const EdgeInsets.all(20),
-        child: ListView.builder(
-          itemCount: messages.length,
-          itemBuilder: (context, index) {
-            return Align(
-              alignment: messages[index].messageType == "receiver"
-                  ? Alignment.centerLeft
-                  : Alignment.centerRight,
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 5),
-                child: SingleChildScrollView(
-                  child: BubbleSpecialOne(
-                    text: messages[index].messageContent,
-                    textStyle: CommonWidget.getTextStyle(
-                        14, FontWeight.bold, Colors.white, context),
-                    isSender: messages[index].messageType == "receiver"
-                        ? false
-                        : true,
-                    color: messages[index].messageType == "receiver"
-                        ? recievedMsgBackgound
-                        : primaryColor,
-                    tail: true,
-                    delivered: true,
+
+        child: Obx(() {
+          return ListView.builder(
+            itemCount: _chatsController.chatList.length,
+            itemBuilder: (context, index) {
+              return Align(
+                alignment:
+                    _chatsController.chatList[index].senderId == sender_id
+                        ? Alignment.centerLeft
+                        : Alignment.centerRight,
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  child: SingleChildScrollView(
+                    child: BubbleSpecialOne(
+                      text: _chatsController.chatList[index].message!,
+                      textStyle: CommonWidget.getTextStyle(
+                          14, FontWeight.bold, Colors.white, context),
+                      isSender:
+                          _chatsController.chatList[index].senderId == sender_id
+                              ? true
+                              : false,
+                      color: _chatsController.chatList[index].receiverId ==
+                              reciever_id
+                          ? recievedMsgBackgound
+                          : primaryColor,
+                      tail: true,
+                      seen: _chatsController.chatList[index].isSeen! == 1,
+                      delivered: true,
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
-        ),
+              );
+            },
+          );
+        }),
       ),
     );
   }

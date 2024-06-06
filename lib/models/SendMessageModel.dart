@@ -1,69 +1,67 @@
-class ChatMessagesModel {
+class SendMessageModel {
   int? status;
   bool? error;
-  List<ChatMessage>? data;
+  String? message;
+  SendMessage? data;
 
-  ChatMessagesModel({this.status, this.error, this.data});
+  SendMessageModel({this.status, this.error, this.message, this.data});
 
-  ChatMessagesModel.fromJson(Map<String, dynamic> json) {
+  SendMessageModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     error = json['error'];
-    if (json['data'] != null) {
-      data = <ChatMessage>[];
-      json['data'].forEach((v) {
-        data!.add(ChatMessage.fromJson(v));
-      });
-    }
+    message = json['message'];
+    data = json['data'] != null ? SendMessage.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
     data['error'] = error;
+    data['message'] = message;
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
-class ChatMessage {
-  int? id;
-  int? senderId;
-  int? receiverId;
+class SendMessage {
+  String? senderId;
+  String? receiverId;
   String? message;
-  int? isSeen;
-  String? createdAt;
+  bool? isSeen;
   String? updatedAt;
+  String? createdAt;
+  int? id;
 
-  ChatMessage(
-      {this.id,
-      this.senderId,
+  SendMessage(
+      {this.senderId,
       this.receiverId,
       this.message,
       this.isSeen,
+      this.updatedAt,
       this.createdAt,
-      this.updatedAt});
+      this.id});
 
-  ChatMessage.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+  SendMessage.fromJson(Map<String, dynamic> json) {
     senderId = json['sender_id'];
     receiverId = json['receiver_id'];
     message = json['message'];
     isSeen = json['is_seen'];
-    createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    createdAt = json['created_at'];
+    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
     data['sender_id'] = senderId;
     data['receiver_id'] = receiverId;
     data['message'] = message;
     data['is_seen'] = isSeen;
-    data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    data['created_at'] = createdAt;
+    data['id'] = id;
     return data;
   }
 }
